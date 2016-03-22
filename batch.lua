@@ -54,7 +54,7 @@ do
 	function batcher.hasToSave()
 		hasToSave_calls = hasToSave_calls + 1
 		local duration = sys.clock() - last_save
-		if params.batcherSaveDuringContinue < 0 and duration > params.batcherSaveDuringContinue then
+		if params.batcherSaveDuringContinue > 0 and duration > params.batcherSaveDuringContinue then
 			hasToSave_calls = 0
 			last_save = sys.clock()
 		end
