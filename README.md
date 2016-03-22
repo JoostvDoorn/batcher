@@ -32,25 +32,6 @@ require 'batcher'
 
 do
 	local job_file = 'temp.job'
-	function sbatch_launcher(arguments)
-		local batch_def = [[
-#!/bin/bash
-#SBATCH --time=00:15:00
-#SBATCH -N 1
-#SBATCH -o log.out
-#SBATCH -e log.err
-#SBATCH -J batch
-
-export LUA_PATH="$LUA_PATH;$ABS/?.lua"
-
-/home/jvdoorn/torch/install/bin/th train.lua \
-]] .. arguments
-		local f = io.open(job_file, "w+")
-		f:write(batch_def)
-		f:close()
-		local cmd = 'sbatch ' .. job_file
-		return cmd
-	end
 
 	function timelimit()
 		-- Enforce the das5 policy
@@ -73,6 +54,27 @@ export LUA_PATH="$LUA_PATH;$ABS/?.lua"
 			end
 		end
 		return math.max(os.time(stop)-os.time(now), 14*60)
+	end
+	function sbatch_launcher(arguments)
+		local time = timelimit()
+		local time_string = math.floor(time/86400) .. "-" .. os.date("%H:%M:%S", time % (86400))
+		local batch_def = [[
+#!/bin/bash
+#SBATCH --time=]] .. time_string .. [[
+#SBATCH -N 1
+#SBATCH -o log.out
+#SBATCH -e log.err
+#SBATCH -J batch
+
+export LUA_PATH="$LUA_PATH;$ABS/?.lua"
+
+/home/jvdoorn/torch/install/bin/th train.lua \
+]] .. arguments
+		local f = io.open(job_file, "w+")
+		f:write(batch_def)
+		f:close()
+		local cmd = 'sbatch ' .. job_file
+		return cmd
 	end
 	batcher.cmd(sbatch_launcher)
 	batcher.timelimit(timelimit)
