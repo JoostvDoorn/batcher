@@ -20,7 +20,7 @@ do
 	cmd:option('-batcherToken','batcher-token.t7','Token to release')
 	cmd:text()
 	-- parse input params
-	local params = cmd:parse(arg)
+	local params = cmd:parse(arg ~= nil and arg or {})
 	local loaded = nil
 	local modules = {}
 	local end_time = sys.clock()+params.batcherTimelimit

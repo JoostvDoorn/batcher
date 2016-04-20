@@ -46,6 +46,14 @@ do
 		end
 	end
 
+	function batcher.checkpointFile(file)
+		checkpointFile = file
+	end
+
+	function batcher.tokenFile(file)
+		tokenFile = file
+	end
+
 	function batcher.stop()
 		done = true
 	end
@@ -76,7 +84,7 @@ do
 			end
 			start = sys.clock()
 			while not batcher.grab_token() do
-				if waitLimit < sys.clock()-start then
+				if (waitForLimit and waitLimit < sys.clock()-start) or limit+waitLimit < sys.clock()-start then
 					print("Waiting too long")
 					error() -- End if we're waiting for too long
 				end

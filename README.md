@@ -1,6 +1,6 @@
 # Torch Batcher
 
-Torch Batcher allows automatic checkpoint creation for use on time restricted computational resources. Torch Batcher was originally created for my personal need to run jobs on the computing cluster DAS-5, which enforces a 15 minute time limit during daytime.
+Torch Batcher allows automatic checkpoint creation for use on time restricted computational resources. Torch Batcher was created for my personal need to run jobs on the computing cluster DAS-5, which enforces a 15 minute time limit during daytime.
 
 *Please note: Torch Batcher may not be bug free so please check if it works for you, and report any issues you have*
 
@@ -82,3 +82,8 @@ export LUA_PATH="$LUA_PATH;$ABS/?.lua"
 	os.remove(job_file)
 end
 ```
+
+
+## Contributions
+
+Feel free to open a pull request.
