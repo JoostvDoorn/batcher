@@ -19,6 +19,7 @@ do
 	local cmd = function(arguments) return 'th ' .. arguments end
 	local checkpointFile = 'batcher-checkpoint.t7'
 	local tokenFile = 'batcher-token.t7'
+	local batcherExtra = ''
 	batcher.set_token(tokenFile)
 
 	if tokenWait <= 0 then
@@ -58,8 +59,12 @@ do
 		done = true
 	end
 
+	function batcher.batcherExtra(extra)
+		batcherExtra = extra -- e.g. to set -batcherBackupDuringRun
+	end
+
 	function batcher.arguments(limit)
-		return string.format("-batcher -batcherBackupDuringRun -batcherTimelimit %f -batcherCheckpoint %s -batcherToken %s", limit, checkpointFile, tokenFile)
+		return string.format("-batcher ".. batcherExtra .." -batcherTimelimit %f -batcherCheckpoint %s -batcherToken %s", limit, checkpointFile, tokenFile)
 	end
 
 	function batcher.launch()
