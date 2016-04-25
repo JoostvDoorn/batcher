@@ -51,7 +51,7 @@ do
 	end
 
 	function batcher.tokenFile(file)
-		batcher.set_token(tokenFile)
+		batcher.set_token(file)
 	end
 
 	function batcher.stop()
